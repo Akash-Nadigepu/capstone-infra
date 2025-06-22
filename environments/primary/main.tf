@@ -37,6 +37,12 @@ module "virtual_network" {
   depends_on = [azurerm_resource_group.primary]
 }
 
+resource "random_string" "suffix" {
+  length  = 4
+  upper   = false
+  special = false
+}
+
 module "key_vault" {
   source              = "../../modules/KeyVault"
   key_vault_name = "kv-primary-${random_string.suffix.result}"
