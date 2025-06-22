@@ -39,7 +39,7 @@ module "virtual_network" {
 
 module "key_vault" {
   source              = "../../modules/KeyVault"
-  key_vault_name      = "kv-primary"
+  key_vault_name = "kv-primary-${random_string.suffix.result}"
   resource_group_name = var.resource_group_name
   location            = var.location
   tenant_id           = var.tenant_id
