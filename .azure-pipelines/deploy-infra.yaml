@@ -1,10 +1,10 @@
 trigger: none
 
 pool:
-  name: Default 
-  
+  name: Default  
+
 variables:
-  TF_WORKING_DIR: 'environments/backend'
+  TF_WORKING_DIR: 'environments/primary'
 
 steps:
 - task: Bash@3
