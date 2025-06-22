@@ -1,45 +1,31 @@
-trigger: none  
+trigger: none
+
 pool:
   name: Default
 
 variables:
-  TF_VERSION: '1.5.7'
   TF_WORKING_DIR: 'environments/primary'
 
-stages:
-- stage: DeployTerraform
-  jobs:
-  - job: TerraformJob
-    displayName: 'Deploy Infra with Terraform'
-    steps:
-    - task: TerraformInstaller@1
-      inputs:
-        terraformVersion: $(TF_VERSION)
+steps:
+- script: terraform -version
+  displayName: 'Verify preinstalled Terraform version'
 
-    - script: |
-        cd $(TF_WORKING_DIR)
-        terraform init
-      displayName: 'Terraform Init'
+- script: |
+    cd $(TF_WORKING_DIR)
+    terraform init
+  displayName: 'Terraform Init'
 
-    - script: |
-        cd $(TF_WORKING_DIR)
-        terraform plan -out=tfplan
-      displayName: 'Terraform Plan'
+- script: |
+    cd $(TF_WORKING_DIR)
+    terraform plan -out=tfplan
+  displayName: 'Terraform Plan'
 
-    - script: |
-        cd $(TF_WORKING_DIR)
-        terraform apply tfplan
-      displayName: 'Terraform Apply'
-      env:
-        ARM_CLIENT_ID: $(ARM_CLIENT_ID)
-        ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
-        ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
-        ARM_TENANT_ID: $(ARM_TENANT_ID)
-
-    - task: AzureCLI@2
-      inputs:
-        azureSubscription: 'terraform-capstone-dev'
-        scriptType: 'bash'
-        scriptLocation: 'inlineScript'
-        inlineScript: |
-          echo "Azure CLI authenticated using service connection"
+- script: |
+    cd $(TF_WORKING_DIR)
+    terraform apply tfplan
+  displayName: 'Terraform Apply'
+  env:
+    ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+    ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+    ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
+    ARM_TENANT_ID: $(ARM_TENANT_ID)
