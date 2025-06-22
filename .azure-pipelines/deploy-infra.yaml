@@ -1,7 +1,7 @@
 trigger: none
 
 pool:
-  name: Default 
+  name: Default
 
 variables:
   TF_WORKING_DIR: 'environments/primary'
@@ -31,7 +31,7 @@ steps:
     ARM_CLIENT_ID: $(ARM_CLIENT_ID)
     ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
     ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
-    ARM_TENANT_ID: $(ARM_TENANT_ID) 
+    ARM_TENANT_ID: $(ARM_TENANT_ID)
 
 - task: Bash@3
   displayName: 'Terraform Apply'
@@ -45,5 +45,3 @@ steps:
     ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
     ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
     ARM_TENANT_ID: $(ARM_TENANT_ID)
-
-
