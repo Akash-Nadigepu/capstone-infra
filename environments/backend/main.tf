@@ -10,7 +10,9 @@ terraform {
 
 provider "azurerm" {
   features {}
+  skip_provider_registration = true
 }
+
 
 module "tf_backend" {
   source               = "../../modules/terraform-backend"
