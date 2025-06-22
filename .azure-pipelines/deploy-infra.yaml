@@ -4,7 +4,7 @@ pool:
   name: Default
 
 variables:
-  TF_WORKING_DIR: 'environments/primary'
+  TF_WORKING_DIR: 'environments/backend'
 
 steps:
 - task: Bash@3
@@ -21,25 +21,12 @@ steps:
     ARM_TENANT_ID: $(ARM_TENANT_ID)
 
 - task: Bash@3
-  displayName: 'Terraform Plan'
+  displayName: 'Terraform Apply Backend Infra'
   inputs:
     targetType: 'inline'
     script: |
       cd $(TF_WORKING_DIR)
-      terraform plan -out=tfplan
-  env:
-    ARM_CLIENT_ID: $(ARM_CLIENT_ID)
-    ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
-    ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
-    ARM_TENANT_ID: $(ARM_TENANT_ID)
-
-- task: Bash@3
-  displayName: 'Terraform Apply'
-  inputs:
-    targetType: 'inline'
-    script: |
-      cd $(TF_WORKING_DIR)
-      terraform apply -auto-approve tfplan
+      terraform apply -auto-approve
   env:
     ARM_CLIENT_ID: $(ARM_CLIENT_ID)
     ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
