@@ -46,5 +46,3 @@ module "key_vault" {
   object_id           = var.object_id
 }
 
-  depends_on = [module.virtual_network]
-}
