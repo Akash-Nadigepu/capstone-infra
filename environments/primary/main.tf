@@ -52,4 +52,20 @@ module "key_vault" {
   object_id           = var.object_id
   environment         = "dev" 
 }
+module "aks" {
+  source              = "../../modules/AKS"
+  aks_name            = "aks-primary"
+  resource_group_name = azurerm_resource_group.primary.name
+  location            = azurerm_resource_group.primary.location
+  dns_prefix          = "aksprimary"
+  node_count          = 2
+  vm_size             = "Standard_DS2_v2"
+  subnet_id           = module.virtual_network.nodepool1_subnet_id
+  environment         = "dev"
+
+  depends_on = [module.virtual_network]
+}
+output "nodepool1_subnet_id" {
+  value = azurerm_subnet.nodepool1.id
+}
 
