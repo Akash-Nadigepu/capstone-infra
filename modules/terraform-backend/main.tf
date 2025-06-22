@@ -11,7 +11,6 @@ resource "azurerm_storage_account" "this" {
   account_replication_type = "LRS"
   enable_https_traffic_only = true
   min_tls_version          = "TLS1_2"
-  allow_blob_public_access = false
 }
 
 resource "azurerm_storage_container" "this" {
