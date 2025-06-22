@@ -1,11 +1,12 @@
 provider "azurerm" {
   features = {}
 
-  client_id       = var.client_id
-  client_secret   = var.client_secret
-  subscription_id = var.subscription_id
-  tenant_id       = var.tenant_id
+  client_id       = var.client_id != "" ? var.client_id : null
+  client_secret   = var.client_secret != "" ? var.client_secret : null
+  subscription_id = var.subscription_id != "" ? var.subscription_id : null
+  tenant_id       = var.tenant_id != "" ? var.tenant_id : null
 }
+
 
 module "virtual_network" {
   source              = "../../modules/VirtualNetwork"
