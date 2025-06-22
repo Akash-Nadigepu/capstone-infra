@@ -59,7 +59,7 @@ module "aks" {
   location            = azurerm_resource_group.primary.location
   dns_prefix          = "aksprimary"
   node_count          = 2
-  vm_size             = "Standard_DS2_v2"
+  vm_size             = "Standard_B2ms"
   subnet_id           = module.virtual_network.aks_subnet_ids["nodepool1"]
   environment         = "dev"
 
