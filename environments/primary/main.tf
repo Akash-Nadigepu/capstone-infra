@@ -5,8 +5,13 @@ terraform {
       version = "~> 3.0"
     }
   }
-
   required_version = ">= 1.3.0"
+  backend "azurerm" {
+    resource_group_name  = "rg-terraform-backend"
+    storage_account_name = "tfstateakashdemo"
+    container_name       = "tfstate"
+    key                  = "primary.terraform.tfstate"
+  }
 }
 
 provider "azurerm" {
@@ -19,10 +24,16 @@ resource "azurerm_resource_group" "primary" {
   location = "centralindia"
 }
 
+resource "random_string" "suffix" {
+  length  = 4
+  upper   = false
+  special = false
+}
+
 module "virtual_network" {
   source              = "../../modules/VirtualNetwork"
-  location            = "centralindia"
-  resource_group_name = "rg-primary"
+  location            = azurerm_resource_group.primary.location
+  resource_group_name = azurerm_resource_group.primary.name
   vnet_name           = "primary-vnet"
   address_space       = "10.10.0.0/16"
 
@@ -33,25 +44,20 @@ module "virtual_network" {
 
   agw_subnet_prefix = "10.10.3.0/24"
   sql_subnet_prefix = "10.10.4.0/24"
-  
-  depends_on = [azurerm_resource_group.primary]
-}
 
-resource "random_string" "suffix" {
-  length  = 4
-  upper   = false
-  special = false
+  depends_on = [azurerm_resource_group.primary]
 }
 
 module "key_vault" {
   source              = "../../modules/KeyVault"
-  key_vault_name = "kv-primary-${random_string.suffix.result}"
-  resource_group_name = var.resource_group_name
-  location            = var.location
+  key_vault_name      = "kv-primary-${random_string.suffix.result}"
+  resource_group_name = azurerm_resource_group.primary.name
+  location            = azurerm_resource_group.primary.location
   tenant_id           = var.tenant_id
   object_id           = var.object_id
-  environment         = "dev" 
+  environment         = "dev"
 }
+
 module "aks" {
   source              = "../../modules/AKS"
   aks_name            = "aks-primary"
@@ -60,12 +66,8 @@ module "aks" {
   dns_prefix          = "aksprimary"
   node_count          = 2
   vm_size             = "Standard_DS2_v2"
-  subnet_id           = module.virtual_network.nodepool1_subnet_id
+  subnet_id           = module.virtual_network.aks_subnet_ids["nodepool1"]
   environment         = "dev"
 
   depends_on = [module.virtual_network]
 }
-output "nodepool1_subnet_id" {
-  value = azurerm_subnet.nodepool1.id
-}
-
