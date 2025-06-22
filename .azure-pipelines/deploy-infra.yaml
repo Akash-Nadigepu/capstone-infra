@@ -1,0 +1,30 @@
+trigger: none  # Manual run
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+  ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+  ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
+  ARM_TENANT_ID: $(ARM_TENANT_ID)
+
+steps:
+- task: TerraformInstaller@1
+  inputs:
+    terraformVersion: '1.5.7'
+
+- script: |
+    cd environments/primary
+    terraform init
+  displayName: 'Terraform Init'
+
+- script: |
+    cd environments/primary
+    terraform plan -out=tfplan
+  displayName: 'Terraform Plan'
+
+- script: |
+    cd environments/primary
+    terraform apply tfplan
+  displayName: 'Terraform Apply'
