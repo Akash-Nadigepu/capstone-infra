@@ -2,7 +2,6 @@ provider "azurerm" {
   features = {}
 }
 
-
 module "virtual_network" {
   source              = "../../modules/VirtualNetwork"
   location            = "India Central"
