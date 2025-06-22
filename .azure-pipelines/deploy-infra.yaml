@@ -1,29 +1,40 @@
 trigger: none
 
 pool:
-  name: Default
-
+  name: Default 
+  
 variables:
   TF_WORKING_DIR: 'environments/backend'
 
 steps:
 - task: Bash@3
-  displayName: 'Terraform Init - Upgrade Provider'
+  displayName: 'Terraform Init'
   inputs:
     targetType: 'inline'
     script: |
       cd $(TF_WORKING_DIR)
-      rm -rf .terraform .terraform.lock.hcl
-      terraform init -upgrade -reconfigure
+      terraform init -reconfigure
   env:
     ARM_CLIENT_ID: $(ARM_CLIENT_ID)
     ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
     ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
     ARM_TENANT_ID: $(ARM_TENANT_ID)
 
+- task: Bash@3
+  displayName: 'Terraform Plan'
+  inputs:
+    targetType: 'inline'
+    script: |
+      cd $(TF_WORKING_DIR)
+      terraform plan
+  env:
+    ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+    ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+    ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
+    ARM_TENANT_ID: $(ARM_TENANT_ID)
 
 - task: Bash@3
-  displayName: 'Terraform Apply Backend Infra'
+  displayName: 'Terraform Apply'
   inputs:
     targetType: 'inline'
     script: |
