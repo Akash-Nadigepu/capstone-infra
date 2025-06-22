@@ -32,4 +32,6 @@ module "virtual_network" {
 
   agw_subnet_prefix = "10.10.3.0/24"
   sql_subnet_prefix = "10.10.4.0/24"
+  
+  depends_on = [azurerm_resource_group.primary]
 }
