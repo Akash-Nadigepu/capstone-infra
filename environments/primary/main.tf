@@ -5,12 +5,18 @@ terraform {
       version = "~> 3.0"
     }
   }
+
   required_version = ">= 1.3.0"
 }
 
 provider "azurerm" {
-  features = {}
+  features {}
 }
+
+provider "azurerm" {
+  features {}
+}
+
 
 module "virtual_network" {
   source              = "../../modules/VirtualNetwork"
