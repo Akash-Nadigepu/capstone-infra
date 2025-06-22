@@ -40,11 +40,11 @@ module "virtual_network" {
 module "key_vault" {
   source              = "../../modules/KeyVault"
   key_vault_name      = "kv-primary"
-  location            = azurerm_resource_group.primary.location
-  resource_group_name = azurerm_resource_group.primary.name
+  resource_group_name = var.resource_group_name
+  location            = var.location
   tenant_id           = var.tenant_id
   object_id           = var.object_id
-  environment         = "dev"
+}
 
   depends_on = [module.virtual_network]
 }
