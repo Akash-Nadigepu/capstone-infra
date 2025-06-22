@@ -11,7 +11,7 @@ resource "azurerm_key_vault" "this" {
   access_policy {
     tenant_id = var.tenant_id
     object_id = var.object_id # This should be your SP/App ID or User
-    secret_permissions = ["get", "list", "set", "delete"]
+    secret_permissions = ["Get", "List", "Set", "Delete"]
   }
 
   tags = {
