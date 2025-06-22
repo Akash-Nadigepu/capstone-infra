@@ -13,6 +13,11 @@ provider "azurerm" {
   features {}
 }
 
+resource "azurerm_resource_group" "primary" {
+  name     = "rg-primary"
+  location = "centralindia"
+}
+
 module "virtual_network" {
   source              = "../../modules/VirtualNetwork"
   location            = "centralindia"
