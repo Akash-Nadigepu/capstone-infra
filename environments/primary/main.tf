@@ -44,5 +44,6 @@ module "key_vault" {
   location            = var.location
   tenant_id           = var.tenant_id
   object_id           = var.object_id
+  environment         = "prod"
 }
 
