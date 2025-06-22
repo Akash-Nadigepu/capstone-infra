@@ -1,16 +1,15 @@
-provider "azurerm" {
-  features {}
-}
-
 terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 3.0"
+      version = "~> 3.62.1"
     }
   }
-
   required_version = ">= 1.3.0"
+}
+
+provider "azurerm" {
+  features {}
 }
 
 module "tf_backend" {
