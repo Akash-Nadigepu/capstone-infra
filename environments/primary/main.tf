@@ -36,3 +36,15 @@ module "virtual_network" {
   
   depends_on = [azurerm_resource_group.primary]
 }
+
+module "key_vault" {
+  source              = "../../modules/KeyVault"
+  key_vault_name      = "kv-primary-${random_string.suffix.result}"
+  location            = azurerm_resource_group.primary.location
+  resource_group_name = azurerm_resource_group.primary.name
+  tenant_id           = var.tenant_id
+  object_id           = var.object_id
+  environment         = "dev"
+
+  depends_on = [module.virtual_network]
+}
