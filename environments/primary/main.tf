@@ -5,8 +5,13 @@ terraform {
       version = "~> 3.0"
     }
   }
-
   required_version = ">= 1.3.0"
+  backend "azurerm" {
+    resource_group_name  = "rg-terraform-backend"
+    storage_account_name = "tfstateakashdemo"
+    container_name       = "tfstate"
+    key                  = "primary.terraform.tfstate"
+  }
 }
 
 provider "azurerm" {
@@ -14,15 +19,24 @@ provider "azurerm" {
   skip_provider_registration = true
 }
 
+variable "tenant_id" {}
+variable "object_id" {}
+
 resource "azurerm_resource_group" "primary" {
   name     = "rg-primary"
   location = "japaneast"
 }
 
+resource "random_string" "suffix" {
+  length  = 4
+  upper   = false
+  special = false
+}
+
 module "virtual_network" {
   source              = "../../modules/VirtualNetwork"
-  location            = "japaneast"
-  resource_group_name = "rg-primary"
+  location            = azurerm_resource_group.primary.location
+  resource_group_name = azurerm_resource_group.primary.name
   vnet_name           = "primary-vnet"
   address_space       = "10.10.0.0/16"
 
@@ -33,25 +47,18 @@ module "virtual_network" {
 
   agw_subnet_prefix = "10.10.3.0/24"
   sql_subnet_prefix = "10.10.4.0/24"
-  
-  depends_on = [azurerm_resource_group.primary]
-}
-
-resource "random_string" "suffix" {
-  length  = 4
-  upper   = false
-  special = false
 }
 
 module "key_vault" {
   source              = "../../modules/KeyVault"
-  key_vault_name = "kv-primary-${random_string.suffix.result}"
-  resource_group_name = var.resource_group_name
-  location            = var.location
+  key_vault_name      = "kv-primary-${random_string.suffix.result}"
+  resource_group_name = azurerm_resource_group.primary.name
+  location            = azurerm_resource_group.primary.location
   tenant_id           = var.tenant_id
   object_id           = var.object_id
-  environment         = "prod" 
+  environment         = "prod"
 }
+
 module "aks" {
   source              = "../../modules/AKS"
   aks_name            = "aks-primary"
