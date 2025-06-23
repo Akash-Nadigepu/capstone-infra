@@ -21,7 +21,7 @@ resource "azurerm_resource_group" "primary" {
 
 module "virtual_network" {
   source              = "../../modules/VirtualNetwork"
-  location            = "centralindia"
+  location            = "japaneast"
   resource_group_name = "rg-primary"
   vnet_name           = "primary-vnet"
   address_space       = "10.10.0.0/16"
