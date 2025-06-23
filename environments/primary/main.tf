@@ -103,18 +103,27 @@ module "traffic_manager" {
   environment         = "prod"
   depends_on          = [azurerm_resource_group.primary]
 }
-
-module "sql" {
-  source              = "../../modules/SQLDatabase"
-  sql_server_name     = "sql-primary-${random_string.suffix.result}"
-  database_name       = "sqldb-primary"
-  resource_group_name = azurerm_resource_group.primary.name
-  location            = azurerm_resource_group.primary.location
-  admin_username      = "akash"
-  admin_password      = "root1234!"   # Use Key Vault later for secure management
-  sku_name            = "Basic"
-  environment         = "prod"
-
-  depends_on = [azurerm_resource_group.primary]
+data "azurerm_key_vault" "kv" {
+  name                = "kv-primary-13mih"
+  resource_group_name = "rg-primary"
 }
+
+data "azurerm_key_vault_secret" "sql_password" {
+  name         = "akash"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+module "sql_db" {
+  source                = "../../modules/SQLDatabase"
+  sql_server_name       = "sqlserver${random_string.suffix.result}"
+  sql_database_name     = "userdb"
+  resource_group_name   = azurerm_resource_group.primary.name
+  location              = azurerm_resource_group.primary.location
+  sql_admin_username    = "akash"
+  sql_admin_password    = data.azurerm_key_vault_secret.sql_password.value
+  environment           = "prod"
+
+  depends_on = [module.key_vault]
+}
+
 
