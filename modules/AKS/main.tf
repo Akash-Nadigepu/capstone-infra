@@ -23,7 +23,8 @@ resource "azurerm_kubernetes_cluster" "aks" {
     service_cidr      = "10.2.0.0/16"
     docker_bridge_cidr = "172.17.0.1/16"
   }
-
+  web_app_routing {
+  }
   tags = {
     Environment = var.environment
   }
