@@ -50,7 +50,7 @@ module "key_vault" {
   location            = var.location
   tenant_id           = var.tenant_id
   object_id           = var.object_id
-  environment         = "dev" 
+  environment         = "prod" 
 }
 module "aks" {
   source              = "../../modules/AKS"
@@ -61,7 +61,7 @@ module "aks" {
   node_count          = 2
   vm_size             = "Standard_B2ms"
   subnet_id           = module.virtual_network.aks_subnet_ids["nodepool1"]
-  environment         = "dev"
+  environment         = "prod"
 
   depends_on = [module.virtual_network]
 }
