@@ -56,7 +56,7 @@ module "acr" {
 
 module "key_vault" {
   source              = "../../modules/KeyVault"
-  key_vault_name      = "kv-primary-${random_string.suffix.result}"
+  key_vault_name      = "kv-primary-1${random_string.suffix.result}"
   resource_group_name = azurerm_resource_group.primary.name
   location            = azurerm_resource_group.primary.location
   tenant_id           = var.tenant_id
