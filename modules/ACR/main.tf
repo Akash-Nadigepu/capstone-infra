@@ -1,12 +1,12 @@
-resource "azurerm_container_registry" "this" {
+
+resource "azurerm_container_registry" "acr" {
   name                = var.acr_name
-  location            = var.location
   resource_group_name = var.resource_group_name
-  sku                 = "Standard" # Recommended for production
-  admin_enabled       = false      # Secure: disable admin user
-  public_network_access_enabled = false # Allow only private access (if desired)
+  location            = var.location
+  sku                 = var.sku
+  admin_enabled       = var.admin_enabled
 
   tags = {
-    Environment = var.environment
+    environment = "prod"
   }
 }
