@@ -81,6 +81,8 @@ module "aks" {
   subnet_id           = module.virtual_network.aks_subnet_ids["nodepool1"]
   acr_name            = module.acr.acr_name
   environment         = "prod"
-
-  depends_on = [module.virtual_network, module.acr]
+  depends_on = [
+    module.virtual_network,
+    time_sleep.wait_after_acr
+  ]
 }
