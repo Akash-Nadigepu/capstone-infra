@@ -1,10 +1,7 @@
 variable "sql_server_name" {}
-variable "database_name" {}
+variable "sql_database_name" {}
 variable "resource_group_name" {}
 variable "location" {}
-variable "admin_username" {}
-variable "admin_password" {}
-variable "sku_name" {
-  default = "Basic"
-}
+variable "sql_admin_username" {}
+variable "sql_admin_password" {}
 variable "environment" {}
