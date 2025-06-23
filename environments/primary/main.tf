@@ -19,7 +19,7 @@ resource "azurerm_resource_group" "primary" {
 }
 
 resource "random_string" "suffix" {
-  length  = 4
+  length  = 5
   upper   = false
   special = false
 }
@@ -56,7 +56,7 @@ module "acr" {
 
 module "key_vault" {
   source              = "../../modules/KeyVault"
-  key_vault_name      = "kv-primary-1${random_string.suffix.result}"
+  key_vault_name      = "kv-primary-${random_string.suffix.result}"
   resource_group_name = azurerm_resource_group.primary.name
   location            = azurerm_resource_group.primary.location
   tenant_id           = var.tenant_id
@@ -75,19 +75,8 @@ module "aks" {
   node_count          = 2
   vm_size             = "Standard_B2ms"
   subnet_id           = module.virtual_network.aks_subnet_ids["nodepool1"]
+  acr_name            = module.acr.acr_name
   environment         = "prod"
 
-  depends_on = [
-    module.virtual_network,
-    module.acr
-  ]
-}
-
-#  Role assignment to allow AKS to pull from ACR
-resource "azurerm_role_assignment" "aks_acr_pull" {
-  scope                = module.acr.acr_id
-  role_definition_name = "AcrPull"
-  principal_id         = module.aks.kubelet_identity_object_id
-
-  depends_on = [module.aks, module.acr]
+  depends_on = [module.virtual_network, module.acr]
 }
