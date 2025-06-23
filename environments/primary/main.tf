@@ -49,6 +49,7 @@ module "acr" {
   location            = azurerm_resource_group.primary.location
   sku                 = "Basic"
   admin_enabled       = false
+  environment         = "prod"
 
   depends_on = [azurerm_resource_group.primary]
 }
