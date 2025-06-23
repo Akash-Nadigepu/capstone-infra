@@ -24,7 +24,7 @@ resource "azurerm_resource_group" "primary" {
 }
 
 resource "random_string" "suffix" {
-  length  = 6
+  length  = 4
   upper   = false
   special = false
 }
@@ -49,7 +49,7 @@ module "virtual_network" {
 
 module "acr" {
   source              = "../../modules/ACR"
-  acr_name            = "acrprimary${random_string.suffix.result}"
+  acr_name            = "acrprimary1${random_string.suffix.result}"
   resource_group_name = azurerm_resource_group.primary.name
   location            = azurerm_resource_group.primary.location
   sku                 = "Basic"
@@ -65,7 +65,7 @@ resource "time_sleep" "wait_after_acr" {
 
 module "key_vault" {
   source              = "../../modules/KeyVault"
-  key_vault_name      = "kv-primary-${random_string.suffix.result}"
+  key_vault_name      = "kv-primary-1${random_string.suffix.result}"
   resource_group_name = azurerm_resource_group.primary.name
   location            = azurerm_resource_group.primary.location
   tenant_id           = var.tenant_id
