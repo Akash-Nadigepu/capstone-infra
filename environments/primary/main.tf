@@ -5,13 +5,8 @@ terraform {
       version = "~> 3.0"
     }
   }
+
   required_version = ">= 1.3.0"
-  backend "azurerm" {
-    resource_group_name  = "rg-terraform-backend"
-    storage_account_name = "tfstateakashdemo"
-    container_name       = "tfstate"
-    key                  = "primary.terraform.tfstate"
-  }
 }
 
 provider "azurerm" {
@@ -19,23 +14,14 @@ provider "azurerm" {
   skip_provider_registration = true
 }
 
-variable "tenant_id" {}
-variable "object_id" {}
-
 resource "azurerm_resource_group" "primary" {
   name     = "rg-primary"
   location = "japanwest"
 }
 
-resource "random_string" "suffix" {
-  length  = 4
-  upper   = false
-  special = false
-}
-
 module "virtual_network" {
   source              = "../../modules/VirtualNetwork"
-  location            = azurerm_resource_group.primary.location
+  location            = "japanwest"
   resource_group_name = azurerm_resource_group.primary.name
   vnet_name           = "primary-vnet"
   address_space       = "10.10.0.0/16"
@@ -47,6 +33,14 @@ module "virtual_network" {
 
   agw_subnet_prefix = "10.10.3.0/24"
   sql_subnet_prefix = "10.10.4.0/24"
+  
+  depends_on = [azurerm_resource_group.primary]
+}
+
+resource "random_string" "suffix" {
+  length  = 4
+  upper   = false
+  special = false
 }
 
 module "key_vault" {
