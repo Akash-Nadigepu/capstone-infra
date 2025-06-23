@@ -15,7 +15,7 @@ provider "azurerm" {
 
 resource "azurerm_resource_group" "primary" {
   name     = "rg-primary"
-  location = "japanwest"
+  location = "australiaeast"
 }
 
 resource "random_string" "suffix" {
