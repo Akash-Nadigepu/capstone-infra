@@ -22,6 +22,7 @@ resource "azurerm_mssql_database" "sql_db" {
   collation          = "SQL_Latin1_General_CP1_CI_AS"
   max_size_gb        = 2
   zone_redundant     = false
+  geo_backup_enabled  = false
 
   tags = {
     environment = var.environment
