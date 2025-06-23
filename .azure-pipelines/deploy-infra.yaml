@@ -13,7 +13,8 @@ steps:
     targetType: 'inline'
     script: |
       cd $(TF_WORKING_DIR)
-      terraform init -reconfigure
+      terraform init -upgrade
+      # terraform init -reconfigure
   env:
     ARM_CLIENT_ID: $(ARM_CLIENT_ID)
     ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
@@ -22,24 +23,24 @@ steps:
     TF_VAR_tenant_id: $(ARM_TENANT_ID)
     TF_VAR_object_id: $(ARM_OBJECT_ID)
 
-- task: Bash@3
-  displayName: 'Terraform Plan'
-  inputs:
-    targetType: 'inline'
-    script: |
-      cd $(TF_WORKING_DIR)
-      terraform plan
-  env:
-    TF_VAR_tenant_id: $(ARM_TENANT_ID)
-    TF_VAR_object_id: $(ARM_OBJECT_ID)
+# - task: Bash@3
+#   displayName: 'Terraform Plan'
+#   inputs:
+#     targetType: 'inline'
+#     script: |
+#       cd $(TF_WORKING_DIR)
+#       terraform plan
+#   env:
+#     TF_VAR_tenant_id: $(ARM_TENANT_ID)
+#     TF_VAR_object_id: $(ARM_OBJECT_ID)
 
-- task: Bash@3
-  displayName: 'Terraform Apply'
-  inputs:
-    targetType: 'inline'
-    script: |
-      cd $(TF_WORKING_DIR)
-      terraform apply -auto-approve
-  env:
-    TF_VAR_tenant_id: $(ARM_TENANT_ID)
-    TF_VAR_object_id: $(ARM_OBJECT_ID)
+# - task: Bash@3
+#   displayName: 'Terraform Apply'
+#   inputs:
+#     targetType: 'inline'
+#     script: |
+#       cd $(TF_WORKING_DIR)
+#       terraform apply -auto-approve
+#   env:
+#     TF_VAR_tenant_id: $(ARM_TENANT_ID)
+#     TF_VAR_object_id: $(ARM_OBJECT_ID)
