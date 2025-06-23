@@ -24,7 +24,7 @@ variable "object_id" {}
 
 resource "azurerm_resource_group" "primary" {
   name     = "rg-primary"
-  location = "japaneast"
+  location = "japanwest"
 }
 
 resource "random_string" "suffix" {
