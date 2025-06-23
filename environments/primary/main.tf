@@ -53,6 +53,10 @@ module "acr" {
 
   depends_on = [azurerm_resource_group.primary]
 }
+resource "time_sleep" "wait_after_acr" {
+  depends_on = [module.acr]
+  create_duration = "30s"
+}
 
 module "key_vault" {
   source              = "../../modules/KeyVault"
