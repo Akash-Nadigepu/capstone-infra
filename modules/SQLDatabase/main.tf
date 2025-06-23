@@ -21,6 +21,7 @@ resource "azurerm_mssql_database" "sql_db" {
   sku_name           = "Basic"
   collation          = "SQL_Latin1_General_CP1_CI_AS"
   max_size_gb        = 2
+  storage_account_type = "Local" 
   zone_redundant     = false
   geo_backup_enabled  = false
 
