@@ -13,7 +13,7 @@ steps:
     targetType: 'inline'
     script: |
       cd $(TF_WORKING_DIR)
-      terraform init 
+      terraform init -upgrade
       # terraform init -reconfigure
   env:
     ARM_CLIENT_ID: $(ARM_CLIENT_ID)
