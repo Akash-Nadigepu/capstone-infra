@@ -16,7 +16,7 @@ provider "azurerm" {
 
 resource "azurerm_resource_group" "primary" {
   name     = "rg-primary"
-  location = "centralindia"
+  location = "japaneast"
 }
 
 module "virtual_network" {
