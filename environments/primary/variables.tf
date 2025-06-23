@@ -11,7 +11,7 @@ variable "object_id" {
 variable "location" {
   description = "Azure location for resources"
   type        = string
-  default     = "centralindia"
+  default     = "japaneast"
 }
 
 variable "resource_group_name" {
