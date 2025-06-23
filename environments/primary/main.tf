@@ -93,3 +93,13 @@ module "aks" {
     azurerm_resource_group.primary
   ]
 }
+module "traffic_manager" {
+  source              = "../../modules/TrafficManager"
+  profile_name        = "tm-primary"
+  dns_name            = "mytm-akash"
+  resource_group_name = azurerm_resource_group.primary.name
+  primary_endpoint    = "1.2.3.4"   # Replace later with actual IP or FQDN
+  secondary_endpoint  = "5.6.7.8"   # Replace later
+  environment         = "prod"
+  depends_on          = [azurerm_resource_group.primary]
+}
