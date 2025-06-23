@@ -19,7 +19,7 @@ resource "azurerm_resource_group" "primary" {
 }
 
 resource "random_string" "suffix" {
-  length  = 5
+  length  = 6
   upper   = false
   special = false
 }
