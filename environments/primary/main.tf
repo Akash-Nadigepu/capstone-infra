@@ -79,10 +79,12 @@ module "aks" {
   node_count          = 2
   vm_size             = "Standard_B2ms"
   subnet_id           = module.virtual_network.aks_subnet_ids["nodepool1"]
-  acr_name            = module.acr.acr_name
   environment         = "prod"
+  acr_name            = module.acr.acr_name
+
   depends_on = [
     module.virtual_network,
-    time_sleep.wait_after_acr
+    module.acr,                        # Ensures ACR is created
+    azurerm_resource_group.primary
   ]
 }
