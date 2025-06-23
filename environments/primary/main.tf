@@ -18,6 +18,12 @@ resource "azurerm_resource_group" "primary" {
   location = "japanwest"
 }
 
+resource "random_string" "suffix" {
+  length  = 4
+  upper   = false
+  special = false
+}
+
 module "virtual_network" {
   source              = "../../modules/VirtualNetwork"
   location            = azurerm_resource_group.primary.location
@@ -34,12 +40,6 @@ module "virtual_network" {
   sql_subnet_prefix = "10.10.4.0/24"
 
   depends_on = [azurerm_resource_group.primary]
-}
-
-resource "random_string" "suffix" {
-  length  = 4
-  upper   = false
-  special = false
 }
 
 module "acr" {
@@ -75,10 +75,18 @@ module "aks" {
   vm_size             = "Standard_B2ms"
   subnet_id           = module.virtual_network.aks_subnet_ids["nodepool1"]
   environment         = "prod"
-  acr_name            = module.acr.acr_name
 
   depends_on = [
     module.virtual_network,
     module.acr
   ]
+}
+
+#  Role assignment to allow AKS to pull from ACR
+resource "azurerm_role_assignment" "aks_acr_pull" {
+  scope                = module.acr.acr_id
+  role_definition_name = "AcrPull"
+  principal_id         = module.aks.kubelet_identity_object_id
+
+  depends_on = [module.aks, module.acr]
 }
