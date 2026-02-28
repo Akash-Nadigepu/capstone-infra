@@ -1,6 +1,6 @@
 # ☁️ Azure DevOps & Cloud Capstone Project
 
-> **Author:** Akash Nadigepu &nbsp;|&nbsp; **Employee ID:** 290396  
+> **Author:** Akash Nadigepu &nbsp;|&nbsp; 
 > **Infrastructure Repo:** [capstone-infra](https://github.com/Akash-Nadigepu/capstone-infra)
 
 ---
