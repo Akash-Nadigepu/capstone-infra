@@ -1,6 +1,6 @@
-# ☁️ Azure DevOps & Cloud Capstone Project
+<img width="945" height="564" alt="image" src="https://github.com/user-attachments/assets/5b61e124-6d11-4646-ade2-01472173596f" /># ☁️ Azure DevOps & Cloud Capstone Project
 
-> **Author:** Akash Nadigepu &nbsp;|&nbsp; **Employee ID:** 290396  
+> **Author:** Akash Nadigepu &nbsp;|&nbsp; 
 > **Infrastructure Repo:** [capstone-infra](https://github.com/Akash-Nadigepu/capstone-infra)
 
 ---
@@ -54,7 +54,8 @@ Key platform components include:
 
 The architecture spans two Azure regions in an **Active-Passive** configuration, with Traffic Manager directing traffic to the primary cluster and failing over to the secondary automatically.
 
-![Infrastructure Architecture](images/image1.png)
+![Infrastructure Architecture](![Uploading image.png…]()
+)
 
 ### Primary Region — Poland Central (Terraform)
 
